@@ -20,6 +20,24 @@ public class PlayerMovement : MonoBehaviour
     // FixedUpdate is called once per specified amount of frames, disregarding game's framerate
     void FixedUpdate()
     {
+        //GetAxisRaw has no smoothing
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+
+        if (Input.GetKey(KeyCode.Space) && grounded) {
+            Jump();
+        }
         
+    }
+
+    private void Jump() {
+        body.velocity = new Vector2(body.velocity.x, jumpHeight);
+        grounded = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Ground")) {
+            grounded = true;
+        }
     }
 }
