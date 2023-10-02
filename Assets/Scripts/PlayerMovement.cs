@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
 
         anim.SetBool("walk", horizontalInput != 0);
+        //anim.SetFloat("run", anim.GetFloat("run")+=0.1);
 
         if ((horizontalInput > 0 && !facingRight) || (horizontalInput < 0 && facingRight)) {
             Flip();
