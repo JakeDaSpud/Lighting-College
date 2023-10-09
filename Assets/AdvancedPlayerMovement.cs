@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
+
 public class AdvancedPlayerMovement : MonoBehaviour
 {
     public float speed = 10f;
@@ -41,6 +43,10 @@ public class AdvancedPlayerMovement : MonoBehaviour
         body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
         anim.SetBool("walk", horizontalInput != 0);
 
+        if (horizontalInput != 0 && grounded) {
+            PlaySound(footstepSound);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && grounded) {
             canDoubleJump = true;
             Jump();
@@ -53,6 +59,10 @@ public class AdvancedPlayerMovement : MonoBehaviour
         
         if ((horizontalInput > 0 && !facingRight) || (horizontalInput < 0 && facingRight)) {
             Flip();
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift) && !isDashing) {
+            StartCoroutine(Dash());
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow) && grounded) {
@@ -81,5 +91,22 @@ public class AdvancedPlayerMovement : MonoBehaviour
         body.velocity = new Vector2(body.velocity.x, jumpHeight);
         anim.SetTrigger("jump");
         grounded = false;
+        PlaySound(jumpSound);
+    }
+
+    //Coroutine
+    IEnumerator Dash() {
+        PlaySound(dashSound);
+        float originalSpeed = speed;
+        speed = dashSpeed;
+        isDashing = true;
+        yield return new WaitForSeconds(0.2f);
+        speed = originalSpeed;
+        isDashing = false;
+    }
+
+    private void PlaySound(AudioClip clip) {
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 }
