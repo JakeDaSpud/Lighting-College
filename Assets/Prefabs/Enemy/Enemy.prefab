@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 5321961776367191505}
   - component: {fileID: 8501110651006163440}
   - component: {fileID: 3730360258014299475}
-  m_Layer: 0
+  - component: {fileID: 8742314005020382423}
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4514634751875830025
 SpriteRenderer:
@@ -187,9 +188,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  groundCheckDistance: 0.6
+  groundCheckDistance: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   maxHealth: 5
   damage: 1
+--- !u!114 &8742314005020382423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633552806264551905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a65d2c759ffcc4ebca9773b0124b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minY: -10
+  screenBuffer: 0.2
