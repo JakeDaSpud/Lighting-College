@@ -16,9 +16,12 @@ public class AdvancedPlayerMovement : MonoBehaviour
     public AudioClip jumpSound;
     public AudioClip dashSound;
     public AudioClip footstepSound;
+    [SerializeField] private int attackDamage = 1;
+    [SerializeField] private float attackRange = 1f;
+    public LayerMask enemyLayers;
     private Rigidbody2D body;
     private Animator anim;
-    private AudioSource audioSource;
+    private AudioSource audioPlayer;
     private bool grounded;
     private bool canDoubleJump = false;
     private bool isDashing = false;
@@ -31,7 +34,7 @@ public class AdvancedPlayerMovement : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
+        audioPlayer = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -77,6 +80,10 @@ public class AdvancedPlayerMovement : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.E)) {
+            Attack();
+        }
+
         
     }
 
@@ -106,7 +113,23 @@ public class AdvancedPlayerMovement : MonoBehaviour
     }
 
     private void PlaySound(AudioClip clip) {
-        audioSource.clip = clip;
-        audioSource.Play();
+        audioPlayer.clip = clip;
+        audioPlayer.Play();
+    }
+
+    void Attack() {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayers);
+        foreach(Collider2D enemy in hitEnemies) {
+            EnemyController enemyController = enemy.GetComponent<EnemyController>();
+            if (enemyController != null) {
+                enemyController.TakeDamage(attackDamage);
+                Debug.Log("Enemy Damaged");
+            }
+        }
+    }
+
+    void OnDrawGizmosSelected() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

@@ -46,4 +46,32 @@ public class EnemyController : MonoBehaviour
 
             bool isGrounded = Physics2D.Raycast(groundCheckPosition, Vector2.down, groundCheckDistance, whatIsGround);
     }
+
+    private void Flip() {
+        Vector3 currentScale = gameObject.transform.localScale;
+        currentScale.x *= -1;
+        gameObject.transform.localScale = currentScale;
+        movingRight = !movingRight;
+    }
+
+    public void TakeDamage(int damageAmount) {
+        currentHealth -= damageAmount;
+        if (currentHealth <= 0) {
+            Die();
+        }
+    }
+
+    public void Die() {
+        if (spawner != null) {
+            spawner.EnemyDied();
+        }
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        AdvancedPlayerMovement player = other.gameObject.GetComponent<AdvancedPlayerMovement>();
+        if (player != null) {
+            Debug.Log($"Player took {damage} from enemy");
+        }
+    }
 }
