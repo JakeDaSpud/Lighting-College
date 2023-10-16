@@ -16,9 +16,8 @@ public class RefactoredAdvancedPlayerScript : MonoBehaviour
     public LayerMask whatIsGround;
     public Transform groundCheckPoint;
     public float groundCheckRadius = 0.2f;
-    public AudioClip jumpSound;
-    public AudioClip dashSound;
-    public AudioClip footstepSound;
+
+    [Header("Attack Settings")]
     [SerializeField] private int attackDamage = 1;
     [SerializeField] private float attackRange = 1f;
     public LayerMask enemyLayers;
@@ -67,12 +66,12 @@ public class RefactoredAdvancedPlayerScript : MonoBehaviour
         body.velocity = new Vector2(body.velocity.x, jumpHeight);
         anim.SetTrigger("jump");
         grounded = false;
-        PlaySound(jumpSound);
+        AudioManager.instance.PlayJumpSound();
     }
 
     //Coroutine
     IEnumerator Dash() {
-        PlaySound(dashSound);
+        AudioManager.instance.PlayDashSound();
         float originalSpeed = speed;
         speed = dashSpeed;
         isDashing = true;
@@ -127,7 +126,7 @@ public class RefactoredAdvancedPlayerScript : MonoBehaviour
         anim.SetBool("walk", horizontalInput != 0);
 
         if (horizontalInput != 0 && grounded) {
-            PlaySound(footstepSound);
+            AudioManager.instance.PlayFootstepSound();
         }
         
         if ((horizontalInput > 0 && !facingRight) || (horizontalInput < 0 && facingRight)) {
