@@ -31,5 +31,12 @@ public class EnemyBoundsCheck : MonoBehaviour
             enemyController.Die();
             return;
         }
+
+        Vector3 enemyScreenPos = mainCamera.WorldToViewportPoint(transform.position);
+        if (enemyScreenPos.x < -screenBuffer || enemyScreenPos.x > 1+screenBuffer || enemyScreenPos.y < -screenBuffer || enemyScreenPos.y > 1+screenBuffer) {
+            enemyController.Die();
+        }
     }
+
+
 }
